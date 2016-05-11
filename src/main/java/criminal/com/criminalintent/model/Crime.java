@@ -1,5 +1,7 @@
 package criminal.com.criminalintent.model;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -9,11 +11,13 @@ public class Crime {
 
     private UUID mId;
     private String mTitle;
+    private boolean mResolved;
+    private Date mDate;
 
     public Crime(){
         super();
-        //generating a random unique id number.
         mId = UUID.randomUUID();
+        mDate = Calendar.getInstance().getTime();
     }
 
     public UUID getId() {
@@ -30,5 +34,21 @@ public class Crime {
 
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    public boolean isResolved() {
+        return mResolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        mResolved = resolved;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
     }
 }
