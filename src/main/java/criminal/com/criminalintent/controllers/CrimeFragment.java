@@ -1,9 +1,8 @@
 package criminal.com.criminalintent.controllers;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import criminal.com.criminalintent.R;
 import criminal.com.criminalintent.model.Crime;
@@ -22,7 +20,6 @@ public class CrimeFragment extends Fragment {
 
     private Crime mCrime;
     private EditText mTitleField;
-    private TextView mTitleView;
     private Button mDateButton;
     private CheckBox mResolved;
 
@@ -48,7 +45,7 @@ public class CrimeFragment extends Fragment {
 
         mDateButton = ((Button) v.findViewById(R.id.crime_date));
         mDateButton.setEnabled(false);
-        mDateButton.setText(mCrime.getTitle());
+        mDateButton.setText(mCrime.getDate().toString());
 
         mResolved = ((CheckBox) v.findViewById(R.id.crime_resolved));
         mResolved.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -59,7 +56,6 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mTitleView = ((TextView) v.findViewById(R.id.title_view));
         mTitleField = ((EditText) v.findViewById(R.id.crime_title));
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,7 +66,6 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
-                mTitleView.setText(s.toString());
             }
 
             @Override
