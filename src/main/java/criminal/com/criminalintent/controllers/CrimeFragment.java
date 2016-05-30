@@ -1,6 +1,7 @@
 package criminal.com.criminalintent.controllers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -13,8 +14,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 import criminal.com.criminalintent.R;
 import criminal.com.criminalintent.model.Crime;
+import criminal.com.criminalintent.model.CrimeLab;
 
 public class CrimeFragment extends Fragment {
 
@@ -40,6 +44,13 @@ public class CrimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //Easy way to get extra using current activity.
+        final Intent intent = getActivity().getIntent();
+        final UUID crimeId = (UUID) intent.getSerializableExtra(CrimeActivity.EXTRA_CRIM_ID);
+        this.mCrime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
+
+
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
@@ -48,6 +59,7 @@ public class CrimeFragment extends Fragment {
         mDateButton.setText(mCrime.getDate().toString());
 
         mResolved = ((CheckBox) v.findViewById(R.id.crime_resolved));
+        mResolved.setChecked(mCrime.isResolved());
         mResolved.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -57,6 +69,7 @@ public class CrimeFragment extends Fragment {
         });
 
         mTitleField = ((EditText) v.findViewById(R.id.crime_title));
+        mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,7 +78,7 @@ public class CrimeFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mCrime.setTitle(s.toString());
+                CrimeFragment.this.mCrime.setTitle(s.toString());
             }
 
             @Override
@@ -76,7 +89,6 @@ public class CrimeFragment extends Fragment {
 
         return v;
     }
-
 
     @Override
     public void onAttach(Context context) {

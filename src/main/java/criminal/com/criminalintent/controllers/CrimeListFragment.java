@@ -1,5 +1,7 @@
 package criminal.com.criminalintent.controllers;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.UUID;
 
 import criminal.com.criminalintent.R;
 import criminal.com.criminalintent.model.Crime;
@@ -56,6 +59,7 @@ public class CrimeListFragment extends Fragment {
 
         public CrimeHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mTitleTextView = ((TextView) itemView.findViewById(R.id.list_item_crime_title_text));
             mDateTextView = ((TextView) itemView.findViewById(R.id.list_item_crime_date_txt_view));
             mSolved = ((CheckBox) itemView.findViewById(R.id.list_item_crime_solved_chk));
@@ -72,10 +76,15 @@ public class CrimeListFragment extends Fragment {
             mSolved.setChecked(crime.isResolved());
         }
 
+        /**
+         * Handles a event on tapped crime from the list, and displays the details view.
+         * This method starts an activity i.e CrimeActivity.
+         * @param v
+         */
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), mCrime.getTitle() + " Clicked!", Toast.LENGTH_SHORT)
-                    .show();
+            final Intent crimeIntent = CrimeActivity.newIntent(getActivity(), this.mCrime.getId());
+            startActivity(crimeIntent);
         }
     }
 
