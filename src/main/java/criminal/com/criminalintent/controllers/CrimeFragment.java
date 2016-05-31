@@ -22,34 +22,47 @@ import criminal.com.criminalintent.model.CrimeLab;
 
 public class CrimeFragment extends Fragment {
 
+    private static final String ARG_CRIME_ID = "crime_id";
+
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mResolved;
 
-
-
-    public Crime getCrime() {
-        return mCrime;
+    /**
+     * Default constructor
+     */
+    public CrimeFragment(){
+        super();
     }
+
+    /**
+     * Encapsulating the creation of the CrimeFragment to itself, the CrimeFragment
+     * knows nothing about the its host - which is good.
+     * @param crimeId
+     * @return
+     */
+    public static CrimeFragment newInstance(UUID crimeId){
+        final Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, crimeId);
+
+        final CrimeFragment crimeFragment = new CrimeFragment();
+        crimeFragment.setArguments(args);
+        return crimeFragment;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
-
-        //configure instance fragment here.
+        //Getting crimeId from fragment argument - central place for store extras for fragments.
+        final UUID crimeId = (UUID) getArguments().get(ARG_CRIME_ID);
+        mCrime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        //Easy way to get extra using current activity.
-        final Intent intent = getActivity().getIntent();
-        final UUID crimeId = (UUID) intent.getSerializableExtra(CrimeActivity.EXTRA_CRIM_ID);
-        this.mCrime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
-
 
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_crime, container, false);
@@ -98,5 +111,11 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 }

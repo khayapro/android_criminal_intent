@@ -11,18 +11,25 @@ import java.util.UUID;
  */
 public class CrimeActivity extends SingleFragmentActivity {
 
-    public static final String EXTRA_CRIM_ID = "criminal.com.criminalintent.controllers.crime_id";
+    private static final String EXTRA_CRIME_ID = "criminal.com.criminalintent.controllers.crime_id";
+
 
 
     public static Intent newIntent(Context packageContext, UUID crimeId){
         final Intent crimeIntent = new Intent(packageContext, CrimeActivity.class);
-        crimeIntent.putExtra(EXTRA_CRIM_ID, crimeId);
+        crimeIntent.putExtra(EXTRA_CRIME_ID, crimeId);
         return crimeIntent;
     }
 
+    /**
+     * The host, CrimeActivity knows about the creation of
+     * CrimeFragment because it hosts it.
+     * @return Fragment
+     */
     @Override
     protected Fragment createFragment() {
-        return new CrimeFragment();
+        final UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        return CrimeFragment.newInstance(crimeId);
     }
 
 }

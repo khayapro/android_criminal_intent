@@ -34,6 +34,17 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
+
+    /**
+     * The use might haved changed the data on the CrimeFragment, and here
+     * we are telling the Adapter to update the list with fresh data.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -133,8 +144,13 @@ public class CrimeListFragment extends Fragment {
 
     public void updateUI(){
         CrimeLab crimeLab = CrimeLab.getInstance(getActivity());
-        mAdapter = new CrimeAdapter(crimeLab.getCrimes());
-        //Setting my adapter
-        mCrimeRecyclerView.setAdapter(mAdapter);
+
+        if(mAdapter == null) {
+            //Setting my adapter
+            mAdapter = new CrimeAdapter(crimeLab.getCrimes());
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }
