@@ -1,5 +1,6 @@
 package criminal.com.criminalintent.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -101,6 +102,15 @@ public class CrimeFragment extends Fragment {
         });
 
         return v;
+    }
+
+    /**
+     * Only the HOST i.e Activity can set the result, a fragment cannot.
+     */
+    private void returnResults(){
+        final Intent result = new Intent();
+        result.putExtra("crime_id", mCrime.getId());
+        getActivity().setResult(Activity.RESULT_OK, result);
     }
 
     @Override

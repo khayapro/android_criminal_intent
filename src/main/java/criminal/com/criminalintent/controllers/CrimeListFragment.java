@@ -1,5 +1,6 @@
 package criminal.com.criminalintent.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import criminal.com.criminalintent.model.CrimeLab;
  *
  */
 public class CrimeListFragment extends Fragment {
+
+    private static final int REQUEST_CRIME = 1;
 
     /**
      * This will communicate with CrimeAdapter when CrimeHolder needs to be created,
@@ -151,6 +154,15 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyItemChanged();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK){
+//            mAdapter.notifyItemChanged(data.get);
         }
     }
 }
